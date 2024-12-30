@@ -16,7 +16,6 @@
         <table>
             <thead>
                 <tr>
-                    <th>Platz</th>
                     <th>Spieler</th>
                     <th>Punkte</th>
                 </tr>
@@ -39,7 +38,6 @@
     for (var i = 0; i < liste.length; i++) {
         const row = document.createElement("tr");
         row.innerHTML = `
-            <td>${i + 1}</td>
             <td>Spieler ${i + 1}</td>
             <td>${liste[i]}</td>
         `;
