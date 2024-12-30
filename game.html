@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div>
+        <h1>Stadt-Land-Fluss</h1>
+    </div>
+
+    <div class="game">
+        <div id="letter" style="margin-bottom: 20px;">
+            <h3>Buchstabe:</h3>
+            <span id="letterSpan"></span>
+        </div>
+
+        <div id="question">
+            <h3>Frage:</h3>
+            <span id="questionSpan"></span>
+        </div>
+
+        <div style="margin-top: 20px;">
+            <button id="answer" style="float: left;">Antworten</button>
+            <button id="skip" style="background-color: red; float: left; margin-left: 10px;">Überspringen</button>
+        </div>
+    </div>
+
+    <div class="answer", style="visibility: hidden;">
+        <h3>Welcher Spieler hat gewonnen?</h3>
+    </div>
+</body>
+<script src="script.js"></script>
+<script>
+    // Lade index html
+    const questionAmount = localStorage.getItem("questionAmount");
+    const playerAmount = localStorage.getItem("playerAmount");
+    let scorelist = [];
+    let gamesDone = 0;
+
+    window.addEventListener("load", function() {
+        game(questionAmount, playerAmount);
+    });
+
+    document.getElementById("skip").addEventListener("click", function() {
+        game(questionAmount, playerAmount);
+    });
+
+    document.getElementById("answer").addEventListener("click", function() {
+        // Zeige das div mit der Klasse "answer" an
+        document.querySelector(".answer").style.visibility = "visible";
+        document.querySelector(".game").style.visibility = "hidden";
+
+        // Generiere so viele Buttons wie Spieler es gibt
+        var answerDiv = document.querySelector(".answer");
+        answerDiv.innerHTML = '';
+        console.log(playerAmount);
+        console.log(questionAmount);
+        var numberOfPlayers = playerAmount;
+        for (var i = 1; i <= numberOfPlayers; i++) {
+            var button = document.createElement("button");
+            button.textContent = "Spieler " + i;
+            answerDiv.appendChild(button);
+        }
+
+        // create list
+        if (scorelist.length == 0) {
+            for (var i = 1; i <= numberOfPlayers; i++) {
+                scorelist.push(0);
+            }
+        }
+        console.log(scorelist);
+
+        // Füge EventListeneren hinzu, um die Variablen zu erhöhen, wenn auf die Buttons geklickt wird
+        var buttons = document.querySelectorAll(".answer button");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].addEventListener("click", function() {
+                // Erhöhe die Variable für den Spieler, auf den geklickt wurde
+                var player = parseInt(this.textContent.split(" ")[1]);
+                // Hier kannst du die Logik für die Erhöhung der Variable einfügen
+                // Zum Beispiel:
+                scorelist[player - 1]++;
+                console.log(scorelist);
+
+                document.querySelector(".answer").style.visibility = "hidden";
+                document.querySelector(".game").style.visibility = "visible";
+                gamesDone++;
+
+                if (gamesDone == questionAmount) {
+                    localStorage.setItem("scorelist", JSON.stringify(scorelist));
+                    window.location.href = "final.html";
+                }
+                else {
+                    game(questionAmount, playerAmount);
+                }
+            });
+        }
+    });
+</script>
+</html>

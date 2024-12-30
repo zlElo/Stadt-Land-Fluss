@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabelle</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div>
+        <h1>Stadt-Land-Fluss</h1>
+    </div>
+
+    <div id="scoreBoard">
+        <h2>Siegertabelle</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Platz</th>
+                    <th>Spieler</th>
+                    <th>Punkte</th>
+                </tr>
+            </thead>
+            <tbody id="scoreTable"></tbody>
+        </table>
+        <p>Sieger ist: <span id="winnerSpan"></span></p>
+    </div>
+</body>
+<script>
+    // get list from json from local storage
+    var scorelist = JSON.parse(localStorage.getItem("scorelist"));
+    var liste = scorelist.slice();
+    var maxIndex = liste.indexOf(Math.max(...liste));
+
+    const winnerSpan = document.getElementById("winnerSpan");
+    winnerSpan.textContent = "Spieler " + (maxIndex + 1) + " mit " + Math.max(...liste) + " Punkten";
+
+    const scoreTable = document.getElementById("scoreTable");
+    for (var i = 0; i < liste.length; i++) {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${i + 1}</td>
+            <td>Spieler ${i + 1}</td>
+            <td>${liste[i]}</td>
+        `;
+        scoreTable.appendChild(row);
+    }
+</script>
+</html>
